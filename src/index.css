@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #228654;
+  --color-primary-hover: #1c7046;
+  --color-primary-dark: #08734d;
+  --color-primary-soft: #f3fbf6;
+  --color-primary-text-dark: #1a3d1f;
+  --color-accent: #e6b64a;
+  --color-accent-dark: #b7791f;
+  --color-accent-soft: #fff8e6;
+  --color-background: #fcfdfc;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f7fbf8;
+  --color-text-primary: #1e2a22;
+  --color-text-secondary: #5f6d66;
+  --color-border: #e6eee9;
+}
+
+@theme {
+  --font-display: "Nunito", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+  }
+
+  h1, h2, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes ocop-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ocop-marquee {
+  display: flex;
+  width: max-content;
+  animation: ocop-marquee 32s linear infinite;
+}
+
+.marquee-container:hover .animate-ocop-marquee,
+.marquee-container:focus-within .animate-ocop-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

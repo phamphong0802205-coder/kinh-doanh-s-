@@ -1,0 +1,6 @@
+{
+  "name": "OCOP Phú Thọ",
+  "description": "Nền tảng khám phá đặc sản Đất Tổ, tìm hiểu câu chuyện làng nghề và thiết kế box quà địa phương theo ngân sách.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

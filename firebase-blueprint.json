@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user profile synchronized from Google Sign-In.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID matching the document ID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name from Google account.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Optional avatar URL.",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was last updated."
+        }
+      },
+      "required": ["uid", "displayName", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Private PII contact record isolated strictly to the account owner.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified account email address.",
+          "maxLength": 200
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional customer phone number.",
+          "maxLength": 30
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last update."
+        }
+      },
+      "required": ["uid", "email", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order document keyed by OCOP-YYMMDD-XXX order code.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Unique order code matching document ID (OCOP-YYMMDD-XXX).",
+          "minLength": 15,
+          "maxLength": 15,
+          "pattern": "^OCOP-[0-9]{6}-[A-Z0-9]{3}$"
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Recipient full name.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "description": "10-digit Vietnamese phone number starting with 0.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^0[0-9]{9}$"
+        },
+        "address": {
+          "type": "string",
+          "description": "Delivery address.",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional customer order note.",
+          "maxLength": 500
+        },
+        "items": {
+          "type": "array",
+          "description": "Ordered line items ({productId, name, qty, price})."
+        },
+        "giftBox": {
+          "type": "object",
+          "description": "Optional AI-designed gift box payload ({message, recipient, occasion, products[]}) or null."
+        },
+        "total": {
+          "type": "number",
+          "description": "Order total in VND."
+        },
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["COD", "Chuyển khoản"],
+          "description": "Selected payment method."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new"],
+          "description": "Initial order status on creation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when order was created."
+        }
+      },
+      "required": [
+        "code",
+        "customerName",
+        "phone",
+        "address",
+        "note",
+        "items",
+        "giftBox",
+        "total",
+        "paymentMethod",
+        "status",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Owner-scoped basic profile documents."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": {
+        "$ref": "#/entities/UserPrivateInfo"
+      },
+      "description": "Owner-only PII subcollection (email, phone)."
+    },
+    "/orders/{orderId}": {
+      "schema": {
+        "$ref": "#/entities/Order"
+      },
+      "description": "Customer orders (write-only create for guests; read/update/delete locked for admin later)."
+    }
+  }
+}

@@ -1,0 +1,151 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net (production mode)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll(['uid', 'displayName', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['uid', 'displayName', 'photoURL', 'createdAt', 'updatedAt'])
+        && data.uid is string
+        && data.uid == userId
+        && data.uid == request.auth.uid
+        && isValidId(data.uid)
+        && data.displayName is string
+        && data.displayName.size() >= 1
+        && data.displayName.size() <= 120
+        && (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 500))
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidUserPrivateInfo(data, userId) {
+      return data.keys().hasAll(['uid', 'email', 'updatedAt'])
+        && data.keys().hasOnly(['uid', 'email', 'phone', 'updatedAt'])
+        && data.uid is string
+        && data.uid == userId
+        && data.uid == request.auth.uid
+        && isValidId(data.uid)
+        && data.email is string
+        && data.email.size() >= 3
+        && data.email.size() <= 200
+        && (!('phone' in data) || (data.phone is string && data.phone.size() <= 30))
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidOrder(data, orderId) {
+      return data.keys().hasAll(['code', 'customerName', 'phone', 'address', 'note', 'items', 'giftBox', 'total', 'paymentMethod', 'status', 'createdAt'])
+        && data.keys().hasOnly(['code', 'customerName', 'phone', 'address', 'note', 'items', 'giftBox', 'total', 'paymentMethod', 'status', 'createdAt'])
+        && data.code is string
+        && data.code == orderId
+        && data.code.matches('^OCOP-[0-9]{6}-[A-Z0-9]{3}$')
+        && data.customerName is string
+        && data.customerName.size() >= 1
+        && data.customerName.size() <= 120
+        && data.phone is string
+        && data.phone.matches('^0[0-9]{9}$')
+        && data.address is string
+        && data.address.size() >= 1
+        && data.address.size() <= 300
+        && data.note is string
+        && data.note.size() <= 500
+        && data.items is list
+        && data.items.size() >= 1
+        && data.items.size() <= 50
+        && data.items[0] is map
+        && (data.giftBox == null || (
+          data.giftBox is map
+          && data.giftBox.keys().hasAll(['message', 'recipient', 'occasion', 'products'])
+          && data.giftBox.keys().hasOnly(['message', 'recipient', 'occasion', 'products'])
+          && data.giftBox.message is string
+          && data.giftBox.message.size() <= 500
+          && data.giftBox.recipient is string
+          && data.giftBox.recipient.size() <= 120
+          && data.giftBox.occasion is string
+          && data.giftBox.occasion.size() <= 80
+          && data.giftBox.products is list
+          && data.giftBox.products.size() >= 1
+          && data.giftBox.products.size() <= 30
+          && data.giftBox.products[0] is map
+        ))
+        && data.total is number
+        && data.total >= 0
+        && data.total <= 500000000
+        && data.paymentMethod in ['COD', 'Chuyển khoản']
+        && data.status == 'new'
+        && data.createdAt is timestamp;
+    }
+
+    match /users/{userId} {
+      allow get: if isValidId(userId) && isOwner(userId);
+      allow list: if false;
+      allow create: if isValidId(userId)
+        && isOwner(userId)
+        && isValidUserProfile(incoming(), userId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isValidId(userId)
+        && isOwner(userId)
+        && isValidUserProfile(incoming(), userId)
+        && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'updatedAt'])
+        && incoming().uid == existing().uid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time;
+      allow delete: if false;
+
+      match /private/{docId} {
+        allow get: if isValidId(userId) && isValidId(docId) && isOwner(userId) && exists(/databases/$(database)/documents/users/$(userId));
+        allow list: if false;
+        allow create: if isValidId(userId)
+          && isValidId(docId)
+          && isOwner(userId)
+          && exists(/databases/$(database)/documents/users/$(userId))
+          && isValidUserPrivateInfo(incoming(), userId)
+          && incoming().updatedAt == request.time;
+        allow update: if isValidId(userId)
+          && isValidId(docId)
+          && isOwner(userId)
+          && exists(/databases/$(database)/documents/users/$(userId))
+          && isValidUserPrivateInfo(incoming(), userId)
+          && incoming().diff(existing()).affectedKeys().hasOnly(['email', 'phone', 'updatedAt'])
+          && incoming().uid == existing().uid
+          && incoming().updatedAt == request.time;
+        allow delete: if false;
+      }
+    }
+
+    // Temporary guest order creation rule (read/list/update/delete disabled until admin RBAC)
+    match /orders/{orderId} {
+      allow get: if false;
+      allow list: if false;
+      allow create: if isValidId(orderId)
+        && isValidOrder(incoming(), orderId)
+        && incoming().createdAt == request.time;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
