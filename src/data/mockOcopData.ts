@@ -53,7 +53,7 @@ export const IMAGE_ASSETS = {
     '/assets/aistudio/1794895733338_2889134475748660333_2889134475748660333_4684b9ee21a80f3d79c5fd91d555fc1b_33d1611e.jpg',
   hungLoVillage:
     'https://dulichphutho.gov.vn/content-uploads/2026/01/Lang-co-Hung-Lo.jpg',
-  zaloQrStaff: '/assets/aistudio/image_8d08f582.png',
+  zaloQrStaff: '/assets/aistudio/zalo_qr_only.png',
 };
 
 export const CATEGORY_1: ProductCategory = 'Nhóm 1 – Trà và đồ uống';
@@ -1795,7 +1795,7 @@ const RAW_CATALOG: RawCatalogEntry[] = [
   },
 
   // ==========================================================
-  // Nhóm 3 – Gia vị, mật ong và thực phẩm địa phương (19 - 28)
+  // Nhóm 3 – Gia vị, mật ong và thực phẩm địa phương (19 - 27)
   // ==========================================================
   {
     orderNumber: 19,
@@ -2558,72 +2558,6 @@ const RAW_CATALOG: RawCatalogEntry[] = [
         'Special, Garlic-Chili, Bamboo-Tube, and Premium lines range around 60,000 – 85,000 VND/box.',
     },
   },
-  {
-    orderNumber: 28,
-    id: 'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
-    name: 'Sét quà Con Cui gồm thịt chua, thịt muối và nem chua',
-    nameEn: 'Con Cui Gift Set (Fermented Pork, Salted Pork & Nem Chua)',
-    category: CATEGORY_3,
-    price: 1690000,
-    unit: 'bộ hộp quà',
-    unitEn: 'luxury gift box set',
-    weight: 'Bộ quà tặng đa món (Thịt chua · Thịt muối · Nem chua)',
-    weightEn: 'Multi-item gift box (Thịt chua · Cured Pork · Nem Chua)',
-    locality: 'Thanh Sơn',
-    ingredients: 'Thịt chua Thanh Sơn, thịt muối đặc sản, nem chua truyền thống đóng ống nứa & hộp gỗ quà biếu',
-    ingredientsEn: 'Thanh Son Fermented Pork, Cured Salted Pork & Nem Chua in bamboo tubes & gift box',
-    shelfLife: '45–60 ngày bảo quản ngăn mát 0–5°C',
-    shelfLifeEn: '45–60 days kept chilled at 0–5°C',
-    image:
-      'https://truongfoods.vn/wp-content/uploads/2023/12/form-post-3.jpg',
-    imageAlt:
-      'Bộ Sét quà Con Cui Trường Foods gồm các ống nứa và hộp gỗ đựng thịt chua, thịt muối và nem chua trên truongfoods.vn',
-    imageAltEn:
-      'Official Truong Foods Con Cui Gift Set featuring bamboo tubes and wooden box on truongfoods.vn',
-    imageCaption:
-      'Ảnh sản phẩm chính thức Sét quà Con Cui Trường Foods (truongfoods.vn)',
-    imageCaptionEn:
-      'Official product photo of Truong Foods Con Cui Gift Set (truongfoods.vn)',
-    imageSource: 'https://truongfoods.vn/',
-    isVerifiedProductPhoto: true,
-    preferenceTags: ['gia-vi-mat-ong'],
-    shortDescription:
-      'Bộ sét quà cao cấp đặc sản Thanh Sơn gồm thịt chua, thịt muối và nem chua đóng ống nứa và hộp gỗ quà biếu sang trọng.',
-    shortDescriptionEn:
-      'Luxury Thanh Son gift set pairing thịt chua, thịt muối, and nem chua in bamboo tubes & ceremonial keepsake box.',
-    story:
-      'Sét quà Con Cui là phiên bản quà biếu tổng hợp cao cấp của đặc sản ẩm thực vùng Thanh Sơn, quy tụ trọn bộ ba hương vị thịt chế biến truyền thống: thịt chua lên men tự nhiên với thính gạo rang, thịt muối đậm đà và nem chua trong những ống nứa xếp gọn bên hộp gỗ trang nhã. Lấy cảm hứng từ nếp đãi khách quý mỗi dịp lễ Tết, sum họp của đồng bào vùng Đất Tổ, sét quà mang nét mộc mạc núi rừng phù hợp làm quà biếu đối tác hoặc người thân phương xa.',
-    storyEn:
-      'The Con Cui Gift Set curates three signature cured and fermented delicacies of Thanh Sơn—roasted-rice-powder Thịt chua, savory cured Thịt muối, and traditional Nem chua—presented inside rustic bamboo tubes nestled in a keepsake wooden box. Echoing highland hospitality for Tết gatherings and corporate gifting, it brings authentic Đất Tổ culinary heritage in one ceremonial hamper.',
-    originNote:
-      'Đặc sản vùng Thanh Sơn, tỉnh Phú Thọ (ảnh sản phẩm chính thức từ truongfoods.vn).',
-    originNoteEn:
-      'Thanh Son District specialty, Phú Thọ Province (official showcase photo from truongfoods.vn).',
-    culturalNote:
-      'Gói trọn phong vị ống nứa và nghệ thuật ủ thịt lên men truyền thống của người Mường Thanh Sơn trong hình thức quà tặng trang trọng.',
-    culturalNoteEn:
-      'Packages traditional Muong bamboo-tube fermented meat heritage into a distinguished gift presentation.',
-    articleLinks: [
-      {
-        label: 'Câu chuyện Thịt chua Thanh Sơn – Trường Foods',
-        labelEn: 'Thanh Son Fermented Pork Craft Story – Truong Foods',
-        url: 'https://truongfoods.vn/cau-chuyen-ve-su-ra-doi-cua-thit-chua-truong-foods-vi-toi-ot/',
-      },
-    ],
-    videoUrl: 'https://youtu.be/FkbLrF1EXo4?si=8ji7ICb01DUMG4Ci',
-    mapUrl:
-      'https://www.google.com/maps?ftid=0x313493897fd96c1d:0xf8e392ee119d5267&g_st=ic',
-    producer: {
-      id: 'producer-thit-chua-thanh-son',
-      name: 'Cơ sở Thịt chua Thanh Sơn – Trường Foods',
-      locality: 'Thanh Sơn',
-      localityEn: 'Thanh Son',
-      address: 'Huyện Thanh Sơn, tỉnh Phú Thọ (xem vị trí trên Google Maps)',
-      addressEn: 'Thanh Son District, Phú Thọ (view on Google Maps)',
-      mapUrl:
-        'https://www.google.com/maps?ftid=0x313493897fd96c1d:0xf8e392ee119d5267&g_st=ic',
-    },
-  },
 ];
 
 // Dynamically build category counts so they never drift
@@ -2914,17 +2848,17 @@ export const FEATURED_GIFT_BOXES: FeaturedGiftBox[] = [
     nameEn: 'Premium Phú Thọ Specialties Box',
     occasion: 'Đối tác',
     description:
-      'Set quà biếu trang trọng kết hợp Trà Đinh cao cấp Hoài Trung (OCOP 5 sao cấp quốc gia), Mật ong đặc biệt Tam Đảo 500g và Sét quà Con Cui.',
+      'Set quà biếu trang trọng kết hợp Trà Đinh cao cấp Hoài Trung (OCOP 5 sao cấp quốc gia), Mật ong đặc biệt Tam Đảo 500g và Đông trùng hạ thảo Anh Minh.',
     descriptionEn:
-      'Distinguished partner gift box uniting National 5-Star OCOP Hoai Trung Premium Dinh Tea, Tam Dao Special Honey (500g), and the Con Cui Gift Set.',
+      'Distinguished partner gift box uniting National 5-Star OCOP Hoai Trung Premium Dinh Tea, Tam Dao Special Honey (500g), and Anh Minh Cordyceps.',
     image: IMAGE_ASSETS.giftBoxCaoCap,
     productIds: [
       'tra-dinh-cao-cap-hoai-trung',
       'mat-ong-tam-dao',
-      'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
+      'dong-trung-ha-thao-anh-minh',
     ],
-    packagingNote: 'Trọn bộ 3 đặc sản: Trà Đinh Hoài Trung (350.000đ) + Mật ong Tam Đảo (290.000đ) + Sét quà Con Cui (1.690.000đ) — 2.330.000đ',
-    packagingNoteEn: 'Full 3-item set: Hoai Trung Tea (350,000 VND) + Tam Dao Honey (290,000 VND) + Con Cui Gift Set (1,690,000 VND) — 2,330,000 VND',
+    packagingNote: 'Trọn bộ 3 đặc sản: Trà Đinh Hoài Trung (350.000đ) + Mật ong Tam Đảo (290.000đ) + Đông trùng hạ thảo Anh Minh (650.000đ) — 1.290.000đ',
+    packagingNoteEn: 'Full 3-item set: Hoai Trung Tea (350,000 VND) + Tam Dao Honey (290,000 VND) + Anh Minh Cordyceps (650,000 VND) — 1,290,000 VND',
   },
 ];
 
@@ -3008,18 +2942,18 @@ export const HERO_BANNER_SLIDES: HeroBannerSlide[] = [
     altEn: 'Morning mist drifting over Long Coc tea hills in Tan Son, Phú Thọ',
     caption: 'Vùng chè trung du Phú Thọ',
     captionEn: 'Phú Thọ Midland Tea Hills',
-    kicker: 'Đặc sản OCOP Phú Thọ · 28 sản phẩm thuộc 3 nhóm',
-    kickerEn: 'Phú Thọ OCOP Specialties · 28 Products in 3 Groups',
+    kicker: 'Đặc sản OCOP Phú Thọ · 27 sản phẩm thuộc 3 nhóm',
+    kickerEn: 'Phú Thọ OCOP Specialties · 27 Products in 3 Groups',
     title: 'Gửi trọn hương vị Đất Tổ',
     titleEn: 'Share the authentic taste of Đất Tổ',
     regionLabel: 'Đặc sản OCOP Phú Thọ – Quà từ Đất Tổ',
     regionLabelEn: 'Phú Thọ OCOP Specialties – Gifts from the Ancestral Land',
     subtitle:
-      'Khám phá 28 đặc sản Phú Thọ có ảnh xác thực gồm Trà & đồ uống, Đặc sản khô & nông sản chế biến, cùng Gia vị, mật ong & thực phẩm địa phương.',
+      'Khám phá 27 đặc sản Phú Thọ có ảnh xác thực gồm Trà & đồ uống, Đặc sản khô & nông sản chế biến, cùng Gia vị, mật ong & thực phẩm địa phương.',
     subtitleEn:
-      'Browse 28 verified-photo Phú Thọ specialties across Tea & Beverages, Dried Specialties & Produce, and Spices, Honey & Local Foods.',
-    primaryCtaLabel: 'Khám phá 28 sản phẩm',
-    primaryCtaLabelEn: 'Explore 28 Products',
+      'Browse 27 verified-photo Phú Thọ specialties across Tea & Beverages, Dried Specialties & Produce, and Spices, Honey & Local Foods.',
+    primaryCtaLabel: 'Khám phá 27 sản phẩm',
+    primaryCtaLabelEn: 'Explore 27 Products',
     primaryTarget: 'products',
     secondaryCtaLabel: 'Thiết kế box quà',
     secondaryCtaLabelEn: 'Build a Gift Box',
@@ -3045,8 +2979,8 @@ export const HERO_BANNER_SLIDES: HeroBannerSlide[] = [
     primaryCtaLabel: 'Thiết kế box quà ngay',
     primaryCtaLabelEn: 'Open Gift Box Builder',
     primaryTarget: 'gift-builder',
-    secondaryCtaLabel: 'Xem đủ 28 sản phẩm',
-    secondaryCtaLabelEn: 'View All 28 Products',
+    secondaryCtaLabel: 'Xem đủ 27 sản phẩm',
+    secondaryCtaLabelEn: 'View All 27 Products',
     secondaryTarget: 'products',
   },
   {
@@ -3106,14 +3040,14 @@ export const HERO_BANNER_SLIDES: HeroBannerSlide[] = [
     captionEn: 'Muong Heritage · Thanh Son Fermented Pork',
     kicker: 'Tinh hoa ẩm thực người Mường · Thanh Sơn, Phú Thọ',
     kickerEn: 'Muong Culinary Craft · Thanh Son, Phú Thọ',
-    title: 'Thịt chua Thanh Sơn & Sét quà Con Cui',
-    titleEn: 'Thanh Son Fermented Pork & Con Cui Sets',
+    title: 'Thịt chua Thanh Sơn – Đặc sản ẩm thực Mường',
+    titleEn: 'Thanh Son Fermented Pork – Muong Delicacy',
     regionLabel: 'Lên men tự nhiên 3–7 ngày trong ống nứa & hộp lót lá ổi',
     regionLabelEn: 'Naturally fermented 3–7 days in bamboo tubes & guava-leaf boxes',
     subtitle:
-      'Hương vị truyền thống từ thịt lợn nướng sơ ướp thính gạo rang vàng, kết hợp cùng thịt muối và nem chua trong sét quà Đất Tổ.',
+      'Hương vị truyền thống từ thịt lợn nướng sơ ướp thính gạo rang vàng, kết tinh nghệ thuật ủ thịt lên men đặc trưng vùng Đất Tổ.',
     subtitleEn:
-      'Lightly seared pork tossed in golden roasted rice powder (thính), paired with cured delicacies in festive gift sets.',
+      'Lightly seared pork tossed in golden roasted rice powder (thính), showcasing traditional Muong fermentation craft in Đất Tổ.',
     primaryCtaLabel: 'Xem câu chuyện từng sản phẩm',
     primaryCtaLabelEn: 'Discover Product Stories',
     primaryTarget: 'products',
@@ -3683,11 +3617,11 @@ export const CRAFT_EXPERIENCES: CraftExperience[] = [
       'Rooted in the Muong community’s traditional practice of fermenting flame-seared pork and golden roasted rice powder (thính) inside bamboo tubes or guava-leaf-lined boxes for 3–7 days with zero preservatives.',
     highlights: [
       'Quy trình 3 bước chuẩn vị: Nướng sơ bì săn thơm, ướp thính gạo rang và ủ tự nhiên 3–7 ngày',
-      'Đa dạng dòng hộp Thịt chua (60k–85k/hộp) và Sét quà Con Cui làm quà biếu đặc sản',
+      'Đa dạng dòng hộp Thịt chua truyền thống, tỏi ớt, ống nứa (60k–85k/hộp) làm quà biếu đặc sản',
     ],
     highlightsEn: [
       '3-step craft: light skin searing, golden rice-powder thính coating, 3–7 day fermentation',
-      'Features fermented pork lines (60k–85k VND/box) and ceremonial Con Cui gift sets',
+      'Features traditional, garlic-chili, and bamboo-tube fermented pork lines (60k–85k VND/box)',
     ],
     scheduleDisclaimer:
       'Lịch tham quan trực tiếp tại nhà máy cần liên hệ trước với Trường Foods Thanh Sơn qua bản đồ hoặc hotline.',
@@ -3724,7 +3658,6 @@ export const CRAFT_EXPERIENCES: CraftExperience[] = [
     ],
     relatedProductIds: [
       'thit-chua-thanh-son',
-      'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
     ],
   },
   {
@@ -3861,8 +3794,8 @@ export const PRODUCER_PROFILES_SAMPLE = [
     representativeEn: 'Phú Thọ OCOP Cooperative Representative (Sample)',
     locality: 'Phú Thọ',
     localityEn: 'Phú Thọ',
-    role: 'Quản lý danh mục 28 sản phẩm & đơn mẫu',
-    roleEn: '28-product catalog & sample order management',
+    role: 'Quản lý danh mục 27 sản phẩm & đơn mẫu',
+    roleEn: '27-product catalog & sample order management',
   },
 ];
 
@@ -3982,9 +3915,9 @@ export const FEEDBACK_THEMES_SAMPLE: FeedbackThemeSample[] = [
     mentionsCount: 21,
     sentiment: 'Tích cực',
     sampleQuote:
-      'Mức giá đầy đủ trên từng sản phẩm giúp tính ngay tổng Box Ngọt lành (445.000đ) và Box Đặc sản cao cấp (2.330.000đ).',
+      'Mức giá đầy đủ trên từng sản phẩm giúp tính ngay tổng Box Ngọt lành (445.000đ) và Box Đặc sản cao cấp (1.290.000đ).',
     sampleQuoteEn:
-      'Complete per-item pricing automatically calculates totals for Wholesome Sweetness Box (445,000 VND) and Premium Box (2,330,000 VND).',
+      'Complete per-item pricing automatically calculates totals for Wholesome Sweetness Box (445,000 VND) and Premium Box (1,290,000 VND).',
   },
 ];
 
@@ -4057,19 +3990,19 @@ export const AI_RECOMMENDATIONS_SAMPLE: AiBusinessRecommendation[] = [
     period: 'Hiện tại',
     periodEn: 'Current',
     finding:
-      'Toàn bộ 28/28 sản phẩm trong 3 nhóm đều đã được cập nhật đầy đủ đơn giá bán lẻ, quy cách, thành phần và nguồn ảnh.',
+      'Toàn bộ 27/27 sản phẩm trong 3 nhóm đều đã được cập nhật đầy đủ đơn giá bán lẻ, quy cách, thành phần và nguồn ảnh.',
     findingEn:
-      'All 28 of 28 specialties across the 3 product groups now feature complete retail prices, weights, ingredients, and verified photos.',
+      'All 27 of 27 specialties across the 3 product groups now feature complete retail prices, weights, ingredients, and verified photos.',
     suggestedAction:
-      'Khách hàng có thể đặt trực tiếp từng sản phẩm hoặc thêm trọn bộ 5 box quà Đất Tổ (205.000đ – 2.330.000đ) vào giỏ hàng.',
+      'Khách hàng có thể đặt trực tiếp từng sản phẩm hoặc thêm trọn bộ 5 box quà Đất Tổ (205.000đ – 1.290.000đ) vào giỏ hàng.',
     suggestedActionEn:
-      'Shoppers can order individual specialties directly or add any of the 5 Đất Tổ gift boxes (205,000 – 2,330,000 VND) to cart.',
+      'Shoppers can order individual specialties directly or add any of the 5 Đất Tổ gift boxes (205,000 – 1,290,000 VND) to cart.',
     confidenceLabel: 'Danh mục hoàn thiện 100%',
     confidenceLabelEn: '100% Complete Catalog',
     targetSection: 'inventory',
     targetLabel: 'Kiểm tra danh mục',
     targetLabelEn: 'Check inventory',
-    relatedProductId: 'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
+    relatedProductId: 'thit-chua-thanh-son',
   },
   {
     id: 'rec-2',
@@ -4078,9 +4011,9 @@ export const AI_RECOMMENDATIONS_SAMPLE: AiBusinessRecommendation[] = [
     period: 'Hiện tại',
     periodEn: 'Current',
     finding:
-      'Cả 5 box quà gợi ý đều đã hiển thị tổng giá tự động: Vị quê (205k), Nông sản làng nghề (245k), Ngọt lành (445k), Trà Đất Tổ (450k) và Cao cấp (2.330k).',
+      'Cả 5 box quà gợi ý đều đã hiển thị tổng giá tự động: Vị quê (205k), Nông sản làng nghề (245k), Ngọt lành (445k), Trà Đất Tổ (450k) và Cao cấp (1.290k).',
     findingEn:
-      'All 5 curated boxes now show exact totals: Hometown Flavors (205k), Craft Harvest (245k), Wholesome Sweetness (445k), Heritage Tea (450k), and Premium (2.33M VND).',
+      'All 5 curated boxes now show exact totals: Hometown Flavors (205k), Craft Harvest (245k), Wholesome Sweetness (445k), Heritage Tea (450k), and Premium (1.29M VND).',
     suggestedAction:
       'Đẩy mạnh giới thiệu Box Trà Đất Tổ kèm câu chuyện bảo tồn Chè búp tím Thanh Ba và Trà xanh Sencha OCOP 4 sao.',
     suggestedActionEn:

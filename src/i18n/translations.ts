@@ -150,7 +150,7 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
     },
     search: {
       placeholder:
-        'Tìm kiếm 28 đặc sản OCOP hoặc 5 box quà (vd: Chè búp tím, Mỳ Hùng Lô, Mật ong, Box Ngọt lành...)',
+        'Tìm kiếm 27 đặc sản OCOP hoặc 5 box quà (vd: Chè búp tím, Mỳ Hùng Lô, Mật ong, Box Ngọt lành...)',
       buttonLabel: 'Tìm kiếm',
       allTab: 'Tất cả',
       productsTab: 'Sản phẩm',
@@ -164,13 +164,13 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       resultsCountSuffix: 'kết quả',
     },
     hero: {
-      kicker: 'Đặc sản OCOP Phú Thọ · 28 sản phẩm thuộc 3 nhóm',
+      kicker: 'Đặc sản OCOP Phú Thọ · 27 sản phẩm thuộc 3 nhóm',
       title: 'Gửi trọn hương vị Đất Tổ',
       subtitle:
-        'Khám phá trọn bộ 28 đặc sản Phú Thọ gồm Trà & đồ uống, Đặc sản khô & nông sản chế biến, cùng Gia vị, mật ong & thực phẩm địa phương. Đầy đủ đơn giá niêm yết, chọn mua lẻ hoặc ghép 5 box quà Đất Tổ.',
-      exploreProducts: 'Khám phá 28 sản phẩm',
+        'Khám phá trọn bộ 27 đặc sản Phú Thọ gồm Trà & đồ uống, Đặc sản khô & nông sản chế biến, cùng Gia vị, mật ong & thực phẩm địa phương. Đầy đủ đơn giá niêm yết, chọn mua lẻ hoặc ghép 5 box quà Đất Tổ.',
+      exploreProducts: 'Khám phá 27 sản phẩm',
       designGiftBox: 'Thiết kế box quà',
-      statProducts: '28 đặc sản · 3 nhóm',
+      statProducts: '27 đặc sản · 3 nhóm',
       statBuilder: '5 box quà gợi ý & tự phối ghép',
       regionCaptionTitle: 'Đặc sản OCOP Phú Thọ – Quà từ Đất Tổ',
       regionCaptionDesc: 'Đầy đủ giá tham khảo, câu chuyện sản phẩm và thông tin cơ sở địa phương',
@@ -183,15 +183,15 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       addBoxToCartBtn: 'Thêm box vào giỏ',
       categoriesKicker: '3 nhóm đặc sản địa phương',
       categoriesTitle: 'Danh mục sản phẩm',
-      featuredProductsKicker: '28 đặc sản Phú Thọ · Ảnh xác thực từ nguồn chính thức',
+      featuredProductsKicker: '27 đặc sản Phú Thọ · Ảnh xác thực từ nguồn chính thức',
       featuredProductsTitle: 'Đặc sản tiêu biểu trong danh mục',
-      viewAllCatalog: 'Xem đủ 28 sản phẩm',
+      viewAllCatalog: 'Xem đủ 27 sản phẩm',
       storyHeading: 'Câu chuyện từ Đất Tổ',
       readMoreStories: 'Đọc thêm câu chuyện OCOP',
       viewExperiences: 'Xem trải nghiệm',
     },
     productDetail: {
-      backToCatalog: 'Quay lại danh mục 28 sản phẩm',
+      backToCatalog: 'Quay lại danh mục 27 sản phẩm',
       samplePhotoNote: 'Chưa có ảnh sản phẩm xác thực',
       verifiedPhotoNote: 'Ảnh sản phẩm thực tế từ nguồn chính thức',
       unverifiedPhotoNote:
@@ -253,9 +253,9 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
     },
     aiWidget: {
       title: 'Hướng dẫn viên văn hóa số AI',
-      subtitle: 'Tra cứu 28 đặc sản Phú Thọ · VI / EN',
+      subtitle: 'Tra cứu 27 đặc sản Phú Thọ · VI / EN',
       welcome:
-        'Xin chào! Tôi là trợ lý tra cứu danh mục 28 đặc sản Phú Thọ và 5 gợi ý box quà. Bạn có thể hỏi về giá bán, quy cách, chứng nhận OCOP, chỉ đường làng nghề hoặc cách phối ghép box quà biếu tặng.',
+        'Xin chào! Tôi là trợ lý tra cứu danh mục 27 đặc sản Phú Thọ và 5 gợi ý box quà. Bạn có thể hỏi về giá bán, quy cách, chứng nhận OCOP, chỉ đường làng nghề hoặc cách phối ghép box quà biếu tặng.',
       placeholder: 'Hỏi về sản phẩm, giá bán, box quà...',
       loading: 'Đang kiểm tra dữ liệu danh mục...',
       toggleOpen: 'Hỏi trợ lý AI',
@@ -264,8 +264,8 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       assistantLabel: 'Trợ lý',
       zaloTitle: 'Tư vấn trực tiếp qua Zalo',
       zaloAction: 'Zalo tư vấn',
-      zaloScanTitle: 'Quét mã QR Zalo nhân viên tư vấn',
-      zaloScanHint: 'Mở ứng dụng Zalo và quét mã QR để trò chuyện trực tiếp cùng nhân viên tư vấn.',
+      zaloScanTitle: 'Nhân viên tư vấn khách hàng',
+      zaloScanHint: 'Mở ứng dụng Zalo và quét mã QR để trò chuyện trực tiếp cùng nhân viên tư vấn khách hàng.',
       backToAi: 'Quay lại Trợ lý AI',
       quickPrompts: [
         'Gợi ý 5 box quà đặc sản Phú Thọ gồm những gì?',
@@ -299,7 +299,7 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
     },
     search: {
       placeholder:
-        'Search 28 OCOP specialties or 5 gift boxes (e.g. Purple Bud Tea, Rice Noodles, Honey, Sweet Box...)',
+        'Search 27 OCOP specialties or 5 gift boxes (e.g. Purple Bud Tea, Rice Noodles, Honey, Sweet Box...)',
       buttonLabel: 'Search',
       allTab: 'All',
       productsTab: 'Products',
@@ -313,13 +313,13 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       resultsCountSuffix: 'results',
     },
     hero: {
-      kicker: 'Phú Thọ OCOP Specialties · 28 Products in 3 Groups',
+      kicker: 'Phú Thọ OCOP Specialties · 27 Products in 3 Groups',
       title: 'Share the authentic taste of Đất Tổ',
       subtitle:
-        'Browse 28 verified-photo Phú Thọ specialties across Tea & Beverages, Dried Specialties & Produce, and Spices, Honey & Local Foods—complete with retail prices and 5 ready-to-gift box pairings.',
-      exploreProducts: 'Explore 28 Products',
+        'Browse 27 verified-photo Phú Thọ specialties across Tea & Beverages, Dried Specialties & Produce, and Spices, Honey & Local Foods—complete with retail prices and 5 ready-to-gift box pairings.',
+      exploreProducts: 'Explore 27 Products',
       designGiftBox: 'Build a Gift Box',
-      statProducts: '28 specialties · 3 groups',
+      statProducts: '27 specialties · 3 groups',
       statBuilder: '5 curated gift boxes & custom builder',
       regionCaptionTitle: 'Phú Thọ OCOP Specialties – Gifts from the Ancestral Land',
       regionCaptionDesc: 'Verified reference pricing, craft stories, and producer locations',
@@ -332,15 +332,15 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       addBoxToCartBtn: 'Add box to cart',
       categoriesKicker: '3 Local Product Groups',
       categoriesTitle: 'Product Categories',
-      featuredProductsKicker: '28 Phú Thọ Specialties · Verified Official Photos',
+      featuredProductsKicker: '27 Phú Thọ Specialties · Verified Official Photos',
       featuredProductsTitle: 'Featured Specialties',
-      viewAllCatalog: 'View all 28 products',
+      viewAllCatalog: 'View all 27 products',
       storyHeading: 'Stories from Đất Tổ',
       readMoreStories: 'Read more OCOP stories',
       viewExperiences: 'Explore experiences',
     },
     productDetail: {
-      backToCatalog: 'Back to 28-product catalog',
+      backToCatalog: 'Back to 27-product catalog',
       samplePhotoNote: 'No verified product photo yet',
       verifiedPhotoNote: 'Verified official product photo',
       unverifiedPhotoNote:
@@ -402,9 +402,9 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
     },
     aiWidget: {
       title: 'Digital Cultural Guide AI',
-      subtitle: '28 Phú Thọ Specialties · VI / EN',
+      subtitle: '27 Phú Thọ Specialties · VI / EN',
       welcome:
-        'Hello! Ask me about the 28 Phú Thọ specialties across 3 groups and our 5 curated gift box combinations—including prices, pack weights, OCOP certifications, craft village locations, and pairing ideas.',
+        'Hello! Ask me about the 27 Phú Thọ specialties across 3 groups and our 5 curated gift box combinations—including prices, pack weights, OCOP certifications, craft village locations, and pairing ideas.',
       placeholder: 'Ask about products, prices, or gift boxes...',
       loading: 'Checking catalog records...',
       toggleOpen: 'Ask AI Guide',
@@ -413,8 +413,8 @@ export const UI_TEXT: Record<Language, UiDictionary> = {
       assistantLabel: 'Guide',
       zaloTitle: 'Direct Zalo consultation',
       zaloAction: 'Zalo Consultant',
-      zaloScanTitle: 'Scan Zalo QR for live consultant',
-      zaloScanHint: 'Open Zalo on your phone and scan this QR code to chat directly with our consultant.',
+      zaloScanTitle: 'Customer Support Consultant',
+      zaloScanHint: 'Open Zalo on your phone and scan this QR code to chat directly with our customer support consultant.',
       backToAi: 'Back to AI Guide',
       quickPrompts: [
         'What are the 5 suggested gift box combinations?',

@@ -79,9 +79,9 @@ const CUSTOMER_REVIEWS = [
     location: 'Đà Nẵng, Việt Nam',
     locationEn: 'Da Nang, Vietnam',
     quote:
-      'Tìm nhanh được Chè búp tím Thanh Ba, Mỳ gạo Hùng Lô, Tương làng Bợ và Sét quà Con Cui rồi thêm thẳng vào giỏ hàng rất tiện lợi.',
+      'Tìm nhanh được Chè búp tím Thanh Ba, Mỳ gạo Hùng Lô, Tương làng Bợ và Đông trùng hạ thảo Anh Minh rồi thêm thẳng vào giỏ hàng rất tiện lợi.',
     quoteEn:
-      'It is super convenient to search Thanh Ba Purple Bud Tea, Hung Lo Rice Noodles, Lang Bo Soy Sauce, and Con Cui Gift Set and add straight to cart.',
+      'It is super convenient to search Thanh Ba Purple Bud Tea, Hung Lo Rice Noodles, Lang Bo Soy Sauce, and Anh Minh Cordyceps and add straight to cart.',
     rating: '4.8',
   },
 ];
@@ -119,16 +119,10 @@ export function HomePage({
 
   useEffect(() => {
     if (isBannerPaused || slideCount <= 1) return;
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
-    }
 
     const interval = window.setInterval(() => {
       setActiveSlideIndex((prev) => (prev + 1) % slideCount);
-    }, 5000);
+    }, 4000);
 
     return () => window.clearInterval(interval);
   }, [isBannerPaused, slideCount]);
@@ -156,10 +150,6 @@ export function HomePage({
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="group relative w-full h-[300px] sm:h-[380px] lg:h-[460px] rounded-md overflow-hidden bg-[#1a3d1f]"
-            onMouseEnter={() => setIsBannerPaused(true)}
-            onMouseLeave={() => setIsBannerPaused(false)}
-            onFocusCapture={() => setIsBannerPaused(true)}
-            onBlurCapture={() => setIsBannerPaused(false)}
             aria-roledescription="carousel"
             aria-label={
               isEn
@@ -184,6 +174,7 @@ export function HomePage({
                     alt={isEn ? slide.altEn : slide.alt}
                     fallbackLabel={isEn ? slide.captionEn : slide.caption}
                     className="w-full h-full object-cover"
+                    loading="eager"
                   />
                 </div>
               );

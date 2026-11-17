@@ -508,7 +508,7 @@ const GROUNDED_PRODUCTS: GroundedProductRecord[] = [
     visitInfo: DEFAULT_VISIT_UNCONFIRMED,
   },
 
-  // Group 3 (19 - 28)
+  // Group 3 (19 - 27)
   {
     orderNumber: 19,
     id: 'tuong-lang-bo',
@@ -717,30 +717,6 @@ const GROUNDED_PRODUCTS: GroundedProductRecord[] = [
     traceabilityUrl: null,
     visitInfo: DEFAULT_VISIT_UNCONFIRMED,
   },
-  {
-    orderNumber: 28,
-    id: 'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
-    name: 'Sét quà Con Cui gồm thịt chua, thịt muối và nem chua',
-    nameEn: 'Con Cui Gift Set (Fermented Pork, Salted Pork & Nem Chua)',
-    category: GROUP_3,
-    priceVnd: 1690000,
-    priceRange: null,
-    priceRangeEn: null,
-    unit: 'bộ hộp quà',
-    unitEn: 'luxury gift box set',
-    weight: 'Bộ quà tặng đa món (Thịt chua · Thịt muối · Nem chua)',
-    locality: 'Thanh Sơn',
-    ocopVerified: false,
-    ocopTier: null,
-    ocopTierEn: null,
-    producerName: 'Cơ sở Thịt chua Thanh Sơn – Trường Foods',
-    address: 'Huyện Thanh Sơn, tỉnh Phú Thọ (xem vị trí trên Google Maps)',
-    mapUrl:
-      'https://www.google.com/maps?ftid=0x313493897fd96c1d:0xf8e392ee119d5267&g_st=ic',
-    videoUrl: 'https://youtu.be/FkbLrF1EXo4?si=8ji7ICb01DUMG4Ci',
-    traceabilityUrl: null,
-    visitInfo: DEFAULT_VISIT_UNCONFIRMED,
-  },
 ];
 
 const CURATED_GIFT_BOXES: GroundedGiftBox[] = [
@@ -808,18 +784,18 @@ const CURATED_GIFT_BOXES: GroundedGiftBox[] = [
     productIds: [
       'tra-dinh-cao-cap-hoai-trung',
       'mat-ong-tam-dao',
-      'set-qua-con-cui-thit-chua-thit-muoi-nem-chua',
+      'dong-trung-ha-thao-anh-minh',
     ],
     summaryVi:
-      'Gồm Trà Đinh cao cấp Hoài Trung 200g (350.000đ, OCOP 5 sao) + Mật ong Tam Đảo 500g (290.000đ) + Sét quà Con Cui (1.690.000đ) = 2.330.000đ.',
+      'Gồm Trà Đinh cao cấp Hoài Trung 200g (350.000đ, OCOP 5 sao) + Mật ong Tam Đảo 500g (290.000đ) + Đông trùng hạ thảo Anh Minh 20g (650.000đ) = 1.290.000đ.',
     summaryEn:
-      'Includes National 5-Star OCOP Hoai Trung Premium Dinh Tea 200g (350,000 VND) + Tam Dao Honey 500g (290,000 VND) + Con Cui Gift Set (1,690,000 VND) = 2,330,000 VND.',
+      'Includes National 5-Star OCOP Hoai Trung Premium Dinh Tea 200g (350,000 VND) + Tam Dao Honey 500g (290,000 VND) + Anh Minh Cordyceps 20g (650,000 VND) = 1,290,000 VND.',
   },
 ];
 
 const GROUNDED_KNOWLEDGE = {
   catalogTitle: 'Đặc sản OCOP Phú Thọ – Quà từ Đất Tổ',
-  totalProducts: 28,
+  totalProducts: 27,
   omittedWithoutVerifiedPhoto: [
     'Mì gạo Quân Lịch',
     'Sữa chua sấy thăng hoa Cheveri',
@@ -827,7 +803,7 @@ const GROUNDED_KNOWLEDGE = {
   groups: [GROUP_1, GROUP_2, GROUP_3],
   curatedGiftBoxes: CURATED_GIFT_BOXES,
   statusNote:
-    'Danh mục gồm trọn bộ 28 sản phẩm có hình ảnh xác thực và đầy đủ giá bán lẻ niêm yết, quy cách, địa phương và thông tin cơ sở sản xuất (Nhóm 1: 10 món, Nhóm 2: 8 món, Nhóm 3: 10 món). Riêng HTX Mỳ gạo Hùng Lô có thông tin đón đoàn tham quan theo lịch hẹn.',
+    'Danh mục gồm trọn bộ 27 sản phẩm có hình ảnh xác thực và đầy đủ giá bán lẻ niêm yết, quy cách, địa phương và thông tin cơ sở sản xuất (Nhóm 1: 10 món, Nhóm 2: 8 món, Nhóm 3: 9 món). Riêng HTX Mỳ gạo Hùng Lô có thông tin đón đoàn tham quan theo lịch hẹn.',
   products: GROUNDED_PRODUCTS,
 };
 
@@ -900,9 +876,9 @@ function buildGroundedFallbackReply(
       return `Đối với "${matchedProduct.name}": Thông tin tham quan hiện chưa được xác nhận. Vui lòng liên hệ cơ sở${matchedProduct.producerName ? ` (${matchedProduct.producerName})` : ''} trước khi đến.${matchedProduct.mapUrl ? ` Chỉ đường tham khảo: ${matchedProduct.mapUrl}` : ''}`;
     }
     if (lang === 'en') {
-      return 'Among the 28 products, Hung Lo Rice Noodle Cooperative (Mỳ gạo sạch Hùng Lô) is confirmed to welcome domestic and international tour groups by prior appointment. For other facilities, visit details are not yet confirmed—please contact them before visiting.';
+      return 'Among the 27 products, Hung Lo Rice Noodle Cooperative (Mỳ gạo sạch Hùng Lô) is confirmed to welcome domestic and international tour groups by prior appointment. For other facilities, visit details are not yet confirmed—please contact them before visiting.';
     }
-    return 'Trong 28 sản phẩm, Hợp tác xã Mỳ gạo Hùng Lô có ghi nhận đón các đoàn khách trong và ngoài nước tới tham quan theo lịch hẹn trước. Các cơ sở còn lại chưa xác nhận lịch mở cửa tham quan; vui lòng liên hệ cơ sở trước khi đến.';
+    return 'Trong 27 sản phẩm, Hợp tác xã Mỳ gạo Hùng Lô có ghi nhận đón các đoàn khách trong và ngoài nước tới tham quan theo lịch hẹn trước. Các cơ sở còn lại chưa xác nhận lịch mở cửa tham quan; vui lòng liên hệ cơ sở trước khi đến.';
   }
 
   if (
@@ -920,23 +896,23 @@ function buildGroundedFallbackReply(
       return `${matchedProduct.name}: Thông tin chứng nhận ghi nhận ${matchedProduct.ocopTier}.${matchedProduct.traceabilityUrl ? ` Hồ sơ truy xuất: ${matchedProduct.traceabilityUrl}` : ''}`;
     }
     if (lang === 'en') {
-      return 'Documented OCOP tiers in the 28-item catalog include Hoai Trung Dinh Tea (National 5-Star OCOP), Long Coc Tea (4-Star OCOP), Da Hen Tea (4-Star OCOP, trace code HTX8403035), Maika Green Sencha & Milk Matcha (4-Star OCOP), Thanh Nam Tea (3–4 Star OCOP), Xuan Son Morning Mist Tea, Cu Thang Rice Noodles, Banaco Green Banana Cereal, Cordyceps Anh Minh, and Tamogi Oyster Mushroom (3-Star OCOP). Remaining items are traditional local specialties.';
+      return 'Documented OCOP tiers in the 27-item catalog include Hoai Trung Dinh Tea (National 5-Star OCOP), Long Coc Tea (4-Star OCOP), Da Hen Tea (4-Star OCOP, trace code HTX8403035), Maika Green Sencha & Milk Matcha (4-Star OCOP), Thanh Nam Tea (3–4 Star OCOP), Xuan Son Morning Mist Tea, Cu Thang Rice Noodles, Banaco Green Banana Cereal, Cordyceps Anh Minh, and Tamogi Oyster Mushroom (3-Star OCOP). Remaining items are traditional local specialties.';
     }
     return 'Các sản phẩm đã ghi nhận hạng OCOP gồm: Trà Đinh Hoài Trung (OCOP 5 sao cấp quốc gia), Chè Long Cốc (OCOP 4 sao), Chè Đá Hen (OCOP 4 sao, mã truy xuất HTX8403035), Trà xanh Sencha & Matcha sữa Maika (OCOP 4 sao), Chè Thành Nam (OCOP 3–4 sao), Chè Sương sớm Xuân Sơn, Mì gạo Cự Thắng, Bột ngũ cốc Banaco, Đông trùng hạ thảo Anh Minh và Nấm sò vàng Tamogi (OCOP 3 sao). Các sản phẩm còn lại là đặc sản truyền thống địa phương.';
   }
 
   if (q.includes('nhóm') || q.includes('group') || q.includes('danh mục') || q.includes('categor')) {
     if (lang === 'en') {
-      return 'The catalog currently features 28 verified-photo products across 3 groups: Group 1 – Tea & Beverages (10 items), Group 2 – Dried Specialties, Snacks & Processed Produce (8 items), and Group 3 – Spices, Honey & Local Foods (10 items).';
+      return 'The catalog currently features 27 verified-photo products across 3 groups: Group 1 – Tea & Beverages (10 items), Group 2 – Dried Specialties, Snacks & Processed Produce (8 items), and Group 3 – Spices, Honey & Local Foods (9 items).';
     }
-    return 'Danh mục hiện có 28 sản phẩm đã xác thực hình ảnh, chia thành 3 nhóm: Nhóm 1 – Trà và đồ uống (10 sản phẩm); Nhóm 2 – Đặc sản khô, đồ ăn vặt và nông sản chế biến (8 sản phẩm); Nhóm 3 – Gia vị, mật ong và thực phẩm địa phương (10 sản phẩm).';
+    return 'Danh mục hiện có 27 sản phẩm đã xác thực hình ảnh, chia thành 3 nhóm: Nhóm 1 – Trà và đồ uống (10 sản phẩm); Nhóm 2 – Đặc sản khô, đồ ăn vặt và nông sản chế biến (8 sản phẩm); Nhóm 3 – Gia vị, mật ong và thực phẩm địa phương (9 sản phẩm).';
   }
 
   if (q.includes('box') || q.includes('quà') || q.includes('gift') || q.includes('gợi ý')) {
     if (lang === 'en') {
-      return `There are 5 suggested gift boxes ready to add to cart or customize:\n• Đất Tổ Heritage Tea Box (450,000 VND)\n• Craft Village Harvest Box (245,000 VND)\n• Phú Thọ Hometown Flavors Box (205,000 VND)\n• Wholesome Sweetness Box (445,000 VND)\n• Premium Phú Thọ Specialties Box (2,330,000 VND).`;
+      return `There are 5 suggested gift boxes ready to add to cart or customize:\n• Đất Tổ Heritage Tea Box (450,000 VND)\n• Craft Village Harvest Box (245,000 VND)\n• Phú Thọ Hometown Flavors Box (205,000 VND)\n• Wholesome Sweetness Box (445,000 VND)\n• Premium Phú Thọ Specialties Box (1,290,000 VND).`;
     }
-    return `Hệ thống có sẵn 5 gợi ý ghép thành box quà chuẩn giá niêm yết:\n• Box Trà Đất Tổ (450.000đ)\n• Box Nông sản làng nghề (245.000đ)\n• Box Vị quê Phú Thọ (205.000đ)\n• Box Ngọt lành (445.000đ)\n• Box Đặc sản cao cấp (2.330.000đ).`;
+    return `Hệ thống có sẵn 5 gợi ý ghép thành box quà chuẩn giá niêm yết:\n• Box Trà Đất Tổ (450.000đ)\n• Box Nông sản làng nghề (245.000đ)\n• Box Vị quê Phú Thọ (205.000đ)\n• Box Ngọt lành (445.000đ)\n• Box Đặc sản cao cấp (1.290.000đ).`;
   }
 
   if (matchedProduct) {
@@ -948,9 +924,9 @@ function buildGroundedFallbackReply(
   }
 
   if (lang === 'en') {
-    return 'I am the OCOP Phú Thọ digital guide. All 28 verified-photo products across 3 groups now display complete retail prices, weights, and 5 curated gift boxes (205,000 – 2,330,000 VND). Ask me about any product, price, or craft village location.';
+    return 'I am the OCOP Phú Thọ digital guide. All 27 verified-photo products across 3 groups now display complete retail prices, weights, and 5 curated gift boxes (205,000 – 1,290,000 VND). Ask me about any product, price, or craft village location.';
   }
-  return 'Tôi là hướng dẫn viên văn hóa số của OCOP Phú Thọ. Trọn bộ 28 sản phẩm thuộc 3 nhóm (10/8/10) và 5 gợi ý ghép box quà (205.000đ – 2.330.000đ) đều đã có đủ đơn giá, quy cách và địa chỉ cơ sở. Bạn có thể hỏi tôi về giá, chứng nhận OCOP hoặc đường đi làng nghề.';
+  return 'Tôi là hướng dẫn viên văn hóa số của OCOP Phú Thọ. Trọn bộ 27 sản phẩm thuộc 3 nhóm (10/8/9) và 5 gợi ý ghép box quà (205.000đ – 1.290.000đ) đều đã có đủ đơn giá, quy cách và địa chỉ cơ sở. Bạn có thể hỏi tôi về giá, chứng nhận OCOP hoặc đường đi làng nghề.';
 }
 
 async function startServer() {
@@ -999,8 +975,8 @@ async function startServer() {
 RESPONSE LANGUAGE: You MUST reply ONLY in ${langLabel}.
 
 STRICT ANTI-HALLUCINATION RULES:
-1. Answer ONLY using the JSON knowledge base provided below (28 products in 3 groups + 5 curated gift boxes). NEVER invent or guess missing OCOP star certifications or visit hours.
-2. Quote the exact prices, weights, and price ranges in the JSON (all 28 products now have reference pricing; Trà Đinh Hoài Trung: 350.000đ / hộp 200g (dải 150.000đ – 600.000đ); Chè Thành Nam: 380.000đ / túi 500g (dải 300.000đ – 1.500.000đ/kg); Thịt chua Thanh Sơn: 65.000đ / hộp 250g (dải 60.000đ – 85.000đ / hộp)). For items with \`ocopTier: null\`, clearly state they are traditional local specialties without fabricating star ratings.
+1. Answer ONLY using the JSON knowledge base provided below (27 products in 3 groups + 5 curated gift boxes). NEVER invent or guess missing OCOP star certifications or visit hours.
+2. Quote the exact prices, weights, and price ranges in the JSON (all 27 products now have reference pricing; Trà Đinh Hoài Trung: 350.000đ / hộp 200g (dải 150.000đ – 600.000đ); Chè Thành Nam: 380.000đ / túi 500g (dải 300.000đ – 1.500.000đ/kg); Thịt chua Thanh Sơn: 65.000đ / hộp 250g (dải 60.000đ – 85.000đ / hộp)). For items with \`ocopTier: null\`, clearly state they are traditional local specialties without fabricating star ratings.
 3. Keep proper place names intact (Phú Thọ, Đất Tổ, Hùng Lô, Thanh Ba, Long Cốc, Thanh Sơn, Cẩm Khê, Lâm Thao, Thanh Thủy, Tân Sơn).
 4. PRODUCER VISIT QUESTIONS:
    - For \`my-gao-sach-sinh-ra-tu-lang-hung-lo\`: \`visitInfo.verified === true\` and \`acceptsVisitors === true\`. Explain clearly that Hung Lo Rice Noodle Cooperative welcomes domestic & international tour groups by prior appointment, and share its verified address, activities, and mapUrl without inventing fixed public opening hours.

@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
+  AlertTriangle,
   ArrowRight,
   Check,
   CheckCircle2,
+  Clock,
   Copy,
   Gift,
   Loader2,
   Minus,
   Plus,
+  RefreshCw,
   ShoppingBag,
   Trash2,
   X,
 } from 'lucide-react';
+import {
+  ACCOUNT_NAME,
+  ACCOUNT_NO,
+  APPS_SCRIPT_URL,
+  BANK_ID,
+} from '../config/orderConfig';
 import {
   FEATURED_GIFT_BOXES,
   evaluateGiftBoxPrice,
@@ -78,7 +87,73 @@ export function CartDrawer({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedOrder, setConfirmedOrder] =
     useState<CreatedOrderSummary | null>(null);
-  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<
+    'waiting' | 'paid' | 'underpaid' | 'timed_out'
+  >('waiting');
+  const [pollingCycle, setPollingCycle] = useState(0);
+  const [isManualChecking, setIsManualChecking] = useState(false);
+  const [qrLoadError, setQrLoadError] = useState(false);
+
+  const checkTransferStatus = useCallback(
+    async (code: string, phoneNumber: string) => {
+      try {
+        const url = `${APPS_SCRIPT_URL}?action=lookup&code=${encodeURIComponent(code)}&phone=${encodeURIComponent(phoneNumber)}`;
+        const response = await fetch(url, { method: 'GET' });
+        if (!response.ok) return;
+        const data = (await response.json()) as {
+          found?: boolean;
+          payStatus?: string;
+        };
+        if (
+          data?.found === true &&
+          typeof data.payStatus === 'string' &&
+          data.payStatus.startsWith('Đã thanh toán')
+        ) {
+          setPaymentStatus('paid');
+        } else if (data?.payStatus === 'Thanh toán thiếu') {
+          setPaymentStatus('underpaid');
+        }
+      } catch (err) {
+        console.error('Lỗi kiểm tra trạng thái thanh toán:', err);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (
+      !isOpen ||
+      !confirmedOrder ||
+      confirmedOrder.paymentMethod !== 'Chuyển khoản' ||
+      paymentStatus === 'paid' ||
+      paymentStatus === 'timed_out'
+    ) {
+      return;
+    }
+
+    const { code, phone: orderPhone } = confirmedOrder;
+
+    const intervalId = window.setInterval(() => {
+      void checkTransferStatus(code, orderPhone);
+    }, 10000);
+
+    const timeoutId = window.setTimeout(() => {
+      window.clearInterval(intervalId);
+      setPaymentStatus((prev) => (prev === 'paid' ? prev : 'timed_out'));
+    }, 20 * 60 * 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [
+    isOpen,
+    confirmedOrder,
+    paymentStatus,
+    pollingCycle,
+    checkTransferStatus,
+  ]);
 
   if (!isOpen) return null;
 
@@ -137,14 +212,25 @@ export function CartDrawer({
     return item.subtitle;
   };
 
-  const handleCopyOrderCode = async (code: string) => {
+  const handleCopyValue = async (fieldKey: string, value: string) => {
     try {
-      await navigator.clipboard.writeText(code);
-      setCopiedCode(true);
-      window.setTimeout(() => setCopiedCode(false), 2000);
+      await navigator.clipboard.writeText(value);
+      setCopiedField(fieldKey);
+      window.setTimeout(() => {
+        setCopiedField((prev) => (prev === fieldKey ? null : prev));
+      }, 2000);
     } catch {
-      setCopiedCode(false);
+      setCopiedField(null);
     }
+  };
+
+  const handleManualRecheck = async () => {
+    if (!confirmedOrder || isManualChecking) return;
+    setIsManualChecking(true);
+    setPaymentStatus('waiting');
+    setPollingCycle((prev) => prev + 1);
+    await checkTransferStatus(confirmedOrder.code, confirmedOrder.phone);
+    setIsManualChecking(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -182,31 +268,35 @@ export function CartDrawer({
     setSubmitError('');
     setIsSubmitting(true);
 
-    const orderItems: OrderLineItem[] = items.map((item) => ({
-      productId: item.productId ?? item.cartKey,
-      name: resolveCartItemName(item),
-      qty: item.quantity,
-      price: item.unitPrice ?? 0,
+    const orderItems: OrderLineItem[] = items.slice(0, 50).map((item) => ({
+      productId: String(item.productId ?? item.cartKey).slice(0, 128),
+      name: resolveCartItemName(item).slice(0, 200),
+      qty: Math.max(1, Math.floor(item.quantity)),
+      price: Math.max(0, Math.round(item.unitPrice ?? 0)),
     }));
 
     const aiBoxItem = items.find((item) => item.giftBoxMeta?.isAiDesigned);
-    const giftBoxPayload: OrderGiftBoxPayload | null = aiBoxItem?.giftBoxMeta
-      ? {
-          message: aiBoxItem.giftBoxMeta.message,
-          recipient: aiBoxItem.giftBoxMeta.recipient,
-          occasion: aiBoxItem.giftBoxMeta.occasion,
-          products: (aiBoxItem.includedItems ?? []).map((sub) => ({
-            productId: sub.productId ?? sub.name,
-            name: sub.name,
-            qty: sub.quantity ?? 1,
-            price: sub.price ?? 0,
-          })),
-        }
-      : null;
+    const aiBoxProducts = (aiBoxItem?.includedItems ?? [])
+      .slice(0, 30)
+      .map((sub) => ({
+        productId: String(sub.productId ?? sub.name).slice(0, 128),
+        name: String(sub.name).slice(0, 200),
+        qty: Math.max(1, Math.floor(sub.quantity ?? 1)),
+        price: Math.max(0, Math.round(sub.price ?? 0)),
+      }));
+    const giftBoxPayload: OrderGiftBoxPayload | null =
+      aiBoxItem?.giftBoxMeta && aiBoxProducts.length > 0
+        ? {
+            message: String(aiBoxItem.giftBoxMeta.message ?? '').slice(0, 500),
+            recipient: String(aiBoxItem.giftBoxMeta.recipient ?? '').slice(0, 120),
+            occasion: String(aiBoxItem.giftBoxMeta.occasion ?? '').slice(0, 80),
+            products: aiBoxProducts,
+          }
+        : null;
 
-    const computedTotal = orderItems.reduce(
-      (sum, entry) => sum + entry.qty * entry.price,
-      0,
+    const computedTotal = Math.min(
+      500000000,
+      orderItems.reduce((sum, entry) => sum + entry.qty * entry.price, 0),
     );
 
     try {
@@ -222,7 +312,10 @@ export function CartDrawer({
       });
 
       setConfirmedOrder(created);
-      setCopiedCode(false);
+      setCopiedField(null);
+      setPaymentStatus('waiting');
+      setPollingCycle(0);
+      setQrLoadError(false);
       setCustomerName('');
       setPhone('');
       setAddress('');
@@ -269,147 +362,310 @@ export function CartDrawer({
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-          {confirmedOrder ? (
-            <div className="bg-white border border-[#e6eee9] rounded-lg p-6 space-y-5">
-              <div className="flex items-center gap-2.5 text-[#228654]">
-                <CheckCircle2 className="w-6 h-6 shrink-0" />
-                <h3 className="font-display text-lg font-extrabold">
-                  {isEn ? 'Order placed successfully' : 'Đặt hàng thành công'}
-                </h3>
-              </div>
+          {confirmedOrder ? (() => {
+            const transferContent = confirmedOrder.code.replace(/-/g, '');
+            const vietQrUrl = `https://img.vietqr.io/image/${encodeURIComponent(
+              BANK_ID,
+            )}-${encodeURIComponent(
+              ACCOUNT_NO,
+            )}-compact2.png?amount=${confirmedOrder.total}&addInfo=${encodeURIComponent(
+              transferContent,
+            )}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+            const bankDisplay =
+              BANK_ID === 'TCB' ? 'Techcombank (TCB)' : BANK_ID;
+            const bankCopyValue =
+              BANK_ID === 'TCB' ? 'Techcombank' : BANK_ID;
+            const transferRows = [
+              {
+                key: 'bank',
+                label: 'Ngân hàng',
+                value: bankDisplay,
+                copyValue: bankCopyValue,
+              },
+              {
+                key: 'accountNo',
+                label: 'Số tài khoản',
+                value: ACCOUNT_NO,
+                copyValue: ACCOUNT_NO,
+                mono: true,
+              },
+              {
+                key: 'accountName',
+                label: 'Chủ tài khoản',
+                value: ACCOUNT_NAME,
+                copyValue: ACCOUNT_NAME,
+              },
+              {
+                key: 'amount',
+                label: 'Số tiền',
+                value: formatVnd(confirmedOrder.total, language),
+                copyValue: String(confirmedOrder.total),
+                mono: true,
+              },
+              {
+                key: 'addInfo',
+                label: 'Nội dung chuyển khoản',
+                value: transferContent,
+                copyValue: transferContent,
+                mono: true,
+              },
+            ];
 
-              <div className="bg-[#f3fbf6] border border-[#228654]/25 rounded-lg p-4 space-y-2">
-                <div className="text-xs font-semibold text-[#5f6d66]">
-                  {isEn ? 'Order code' : 'Mã đơn hàng'}
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-lg font-extrabold text-[#228654] tracking-wide">
-                    {confirmedOrder.code}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyOrderCode(confirmedOrder.code)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-white hover:bg-[#e8f5ee] text-[#228654] border border-[#228654]/30 rounded-md transition-colors cursor-pointer whitespace-nowrap"
-                  >
-                    {copiedCode ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        <span>{isEn ? 'Copied' : 'Đã sao chép'}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>{isEn ? 'Copy code' : 'Sao chép mã đơn'}</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <p className="text-sm font-medium text-[#1e2a22] leading-relaxed">
-                {isEn
-                  ? 'We will contact you to confirm your order as soon as possible.'
-                  : 'Chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất'}
-              </p>
-
-              <div className="bg-[#fcfdfc] border border-[#e6eee9] rounded-lg p-4 space-y-3 text-xs">
-                <div className="font-bold text-[#1e2a22]">
-                  {isEn ? 'Order summary' : 'Tóm tắt đơn hàng'}
-                </div>
-
-                <div className="space-y-1.5 text-[#38473e]">
-                  <div className="flex justify-between gap-3">
-                    <span className="text-[#5f6d66]">
-                      {isEn ? 'Recipient' : 'Người nhận'}
-                    </span>
-                    <span className="font-semibold text-right text-[#1e2a22]">
-                      {confirmedOrder.customerName}
-                    </span>
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <span className="text-[#5f6d66]">
-                      {isEn ? 'Phone' : 'Số điện thoại'}
-                    </span>
-                    <span className="font-mono font-semibold tabular-nums text-[#1e2a22]">
-                      {confirmedOrder.phone}
-                    </span>
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <span className="text-[#5f6d66]">
-                      {isEn ? 'Address' : 'Địa chỉ'}
-                    </span>
-                    <span className="text-right text-[#1e2a22]">
-                      {confirmedOrder.address}
-                    </span>
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <span className="text-[#5f6d66]">
-                      {isEn ? 'Payment' : 'Thanh toán'}
-                    </span>
-                    <span className="font-semibold text-[#1e2a22]">
-                      {confirmedOrder.paymentMethod}
-                    </span>
-                  </div>
-                  {confirmedOrder.note && (
-                    <div className="flex justify-between gap-3">
-                      <span className="text-[#5f6d66]">
-                        {isEn ? 'Note' : 'Ghi chú'}
-                      </span>
-                      <span className="text-right text-[#1e2a22]">
-                        {confirmedOrder.note}
-                      </span>
-                    </div>
-                  )}
+            return (
+              <div className="bg-white border border-[#e6eee9] rounded-lg p-5 space-y-5">
+                <div className="flex items-center gap-2.5 text-[#228654]">
+                  <CheckCircle2 className="w-6 h-6 shrink-0" />
+                  <h3 className="font-display text-lg font-extrabold">
+                    {isEn ? 'Order placed successfully' : 'Đặt hàng thành công'}
+                  </h3>
                 </div>
 
-                <div className="border-t border-[#e6eee9] pt-2.5 space-y-1.5">
-                  {confirmedOrder.items.map((entry, idx) => (
-                    <div
-                      key={`${entry.productId}-${idx}`}
-                      className="flex justify-between gap-2 text-[#1e2a22]"
+                <div className="bg-[#f3fbf6] border border-[#228654]/25 rounded-lg p-4 space-y-2">
+                  <div className="text-xs font-semibold text-[#5f6d66]">
+                    {isEn ? 'Order code' : 'Mã đơn hàng'}
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-mono text-lg font-extrabold text-[#228654] tracking-wide">
+                      {confirmedOrder.code}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopyValue('orderCode', confirmedOrder.code)
+                      }
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-white hover:bg-[#e8f5ee] text-[#228654] border border-[#228654]/30 rounded-md transition-colors cursor-pointer whitespace-nowrap"
                     >
-                      <span className="truncate">
-                        {entry.name} ×{entry.qty}
-                      </span>
-                      <span className="font-semibold tabular-nums shrink-0">
-                        {formatVnd(entry.price * entry.qty, language)}
-                      </span>
-                    </div>
-                  ))}
+                      {copiedField === 'orderCode' ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" />
+                          <span>{isEn ? 'Copied' : 'Đã sao chép'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>{isEn ? 'Copy code' : 'Sao chép mã đơn'}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
-                {confirmedOrder.giftBox && (
-                  <div className="border-t border-[#e6eee9] pt-2 text-[11px] text-[#5f6d66]">
-                    <span className="font-semibold text-[#b7791f]">
-                      {isEn ? 'AI Gift Box:' : 'Box quà thiết kế:'}
-                    </span>{' '}
-                    {confirmedOrder.giftBox.occasion}
-                    {confirmedOrder.giftBox.message
-                      ? ` · "${confirmedOrder.giftBox.message}"`
-                      : ''}
+                <p className="text-sm font-medium text-[#1e2a22] leading-relaxed">
+                  {isEn
+                    ? 'We will contact you to confirm your order as soon as possible.'
+                    : 'Chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất'}
+                </p>
+
+                {confirmedOrder.paymentMethod === 'Chuyển khoản' ? (
+                  <div className="bg-[#fcfdfc] border border-[#cfe5ff] rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <h4 className="text-sm font-extrabold text-[#1e2a22]">
+                        Thanh toán bằng QR
+                      </h4>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2 bg-white border border-[#e6eee9] rounded-lg p-3">
+                      <img
+                        src={
+                          !qrLoadError
+                            ? vietQrUrl
+                            : '/assets/aistudio/bank_qr_tcb.png'
+                        }
+                        alt={`Mã QR chuyển khoản ${confirmedOrder.code}`}
+                        onError={() => {
+                          if (!qrLoadError) setQrLoadError(true);
+                        }}
+                        className="w-60 min-w-[240px] max-w-full h-auto block rounded-md"
+                      />
+                    </div>
+
+                    <div className="space-y-2 text-xs">
+                      {transferRows.map((row) => (
+                        <div
+                          key={row.key}
+                          className="bg-white border border-[#e6eee9] rounded-md px-3 py-2 flex items-center justify-between gap-2"
+                        >
+                          <div className="min-w-0">
+                            <div className="text-[11px] text-[#5f6d66]">
+                              {row.label}
+                            </div>
+                            <div
+                              className={`text-xs font-bold text-[#1e2a22] break-all ${
+                                row.mono ? 'font-mono tabular-nums' : ''
+                              }`}
+                            >
+                              {row.value}
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyValue(row.key, row.copyValue)
+                            }
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-[#228654] bg-[#f3fbf6] hover:bg-[#e8f5ee] border border-[#228654]/25 rounded transition-colors cursor-pointer shrink-0"
+                          >
+                            {copiedField === row.key ? (
+                              <>
+                                <Check className="w-3 h-3" />
+                                <span>Đã chép</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3" />
+                                <span>Sao chép</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-[#fff8e6] border border-[#e6b64a] rounded-md px-3 py-2.5 flex items-start gap-2 text-xs font-semibold text-[#7c4d03]">
+                      <AlertTriangle className="w-4 h-4 text-[#b7791f] shrink-0 mt-0.5" />
+                      <span>
+                        Vui lòng giữ đúng nội dung chuyển khoản và đúng số tiền để đơn được xác nhận tự động.
+                      </span>
+                    </div>
+
+                    {paymentStatus === 'paid' ? (
+                      <div className="bg-[#e8f5ee] border border-[#228654]/40 rounded-md px-3 py-2.5 flex items-center gap-2 text-xs font-bold text-[#156d42]">
+                        <CheckCircle2 className="w-4 h-4 shrink-0 text-[#228654]" />
+                        <span>Đã nhận thanh toán, cảm ơn bạn</span>
+                      </div>
+                    ) : paymentStatus === 'underpaid' ? (
+                      <div className="bg-[#fef2f2] border border-[#fecaca] rounded-md px-3 py-2.5 flex items-center gap-2 text-xs font-bold text-[#B91C1C]">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <span>Số tiền chuyển chưa đủ, vui lòng liên hệ shop</span>
+                      </div>
+                    ) : (
+                      <div className="bg-[#f3f7fb] border border-[#cfe5ff] rounded-md px-3 py-2.5 flex items-center justify-between gap-2 text-xs font-semibold text-[#1e2a22]">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-[#0068FF] shrink-0" />
+                          <span>Đang chờ thanh toán</span>
+                        </div>
+                        {paymentStatus === 'timed_out' && (
+                          <button
+                            type="button"
+                            onClick={handleManualRecheck}
+                            disabled={isManualChecking}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-white bg-[#228654] hover:bg-[#08734d] rounded cursor-pointer shrink-0 disabled:opacity-60"
+                          >
+                            <RefreshCw
+                              className={`w-3 h-3 ${
+                                isManualChecking ? 'animate-spin' : ''
+                              }`}
+                            />
+                            <span>Kiểm tra lại</span>
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-[#f7fbf8] border border-[#e6eee9] rounded-md px-3.5 py-2.5 text-xs font-semibold text-[#1e2a22]">
+                    Thanh toán khi nhận hàng
                   </div>
                 )}
 
-                <div className="border-t border-[#e6eee9] pt-2.5 flex items-center justify-between text-sm font-extrabold text-[#228654]">
-                  <span>{isEn ? 'Total' : 'Tổng cộng'}</span>
-                  <span className="tabular-nums">
-                    {formatVnd(confirmedOrder.total, language)}
-                  </span>
-                </div>
-              </div>
+                <div className="bg-[#fcfdfc] border border-[#e6eee9] rounded-lg p-4 space-y-3 text-xs">
+                  <div className="font-bold text-[#1e2a22]">
+                    {isEn ? 'Order summary' : 'Tóm tắt đơn hàng'}
+                  </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setConfirmedOrder(null);
-                  onClose();
-                }}
-                className="w-full py-2.5 px-4 bg-[#228654] hover:bg-[#08734d] text-white text-sm font-bold rounded-md transition-colors cursor-pointer"
-              >
-                {isEn ? 'Continue shopping' : 'Tiếp tục khám phá'}
-              </button>
-            </div>
-          ) : isEmptyState ? (
+                  <div className="space-y-1.5 text-[#38473e]">
+                    <div className="flex justify-between gap-3">
+                      <span className="text-[#5f6d66]">
+                        {isEn ? 'Recipient' : 'Người nhận'}
+                      </span>
+                      <span className="font-semibold text-right text-[#1e2a22]">
+                        {confirmedOrder.customerName}
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-[#5f6d66]">
+                        {isEn ? 'Phone' : 'Số điện thoại'}
+                      </span>
+                      <span className="font-mono font-semibold tabular-nums text-[#1e2a22]">
+                        {confirmedOrder.phone}
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-[#5f6d66]">
+                        {isEn ? 'Address' : 'Địa chỉ'}
+                      </span>
+                      <span className="text-right text-[#1e2a22]">
+                        {confirmedOrder.address}
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-[#5f6d66]">
+                        {isEn ? 'Payment' : 'Thanh toán'}
+                      </span>
+                      <span className="font-semibold text-[#1e2a22]">
+                        {confirmedOrder.paymentMethod}
+                      </span>
+                    </div>
+                    {confirmedOrder.note && (
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#5f6d66]">
+                          {isEn ? 'Note' : 'Ghi chú'}
+                        </span>
+                        <span className="text-right text-[#1e2a22]">
+                          {confirmedOrder.note}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border-t border-[#e6eee9] pt-2.5 space-y-1.5">
+                    {confirmedOrder.items.map((entry, idx) => (
+                      <div
+                        key={`${entry.productId}-${idx}`}
+                        className="flex justify-between gap-2 text-[#1e2a22]"
+                      >
+                        <span className="truncate">
+                          {entry.name} ×{entry.qty}
+                        </span>
+                        <span className="font-semibold tabular-nums shrink-0">
+                          {formatVnd(entry.price * entry.qty, language)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {confirmedOrder.giftBox && (
+                    <div className="border-t border-[#e6eee9] pt-2 text-[11px] text-[#5f6d66]">
+                      <span className="font-semibold text-[#b7791f]">
+                        {isEn ? 'AI Gift Box:' : 'Box quà thiết kế:'}
+                      </span>{' '}
+                      {confirmedOrder.giftBox.occasion}
+                      {confirmedOrder.giftBox.message
+                        ? ` · "${confirmedOrder.giftBox.message}"`
+                        : ''}
+                    </div>
+                  )}
+
+                  <div className="border-t border-[#e6eee9] pt-2.5 flex items-center justify-between text-sm font-extrabold text-[#228654]">
+                    <span>{isEn ? 'Total' : 'Tổng cộng'}</span>
+                    <span className="tabular-nums">
+                      {formatVnd(confirmedOrder.total, language)}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmedOrder(null);
+                    onClose();
+                  }}
+                  className="w-full py-2.5 px-4 bg-[#228654] hover:bg-[#08734d] text-white text-sm font-bold rounded-md transition-colors cursor-pointer"
+                >
+                  {isEn ? 'Continue shopping' : 'Tiếp tục khám phá'}
+                </button>
+              </div>
+            );
+          })() : isEmptyState ? (
             <div className="py-16 text-center space-y-3">
               <ShoppingBag
                 className="w-10 h-10 text-[#228654]/35 mx-auto"
@@ -422,7 +678,7 @@ export function CartDrawer({
               </p>
               <p className="text-sm text-[#5f6d66] max-w-xs mx-auto leading-relaxed">
                 {isEn
-                  ? 'Browse our 28 Phú Thọ specialties or select one of our 5 curated gift boxes.'
+                  ? 'Browse our 27 Phú Thọ specialties or select one of our 5 curated gift boxes.'
                   : 'Hãy chọn đặc sản Phú Thọ hoặc thiết kế box quà theo dịp tặng của bạn.'}
               </p>
             </div>

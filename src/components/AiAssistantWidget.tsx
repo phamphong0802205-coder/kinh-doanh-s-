@@ -258,22 +258,25 @@ export function AiAssistantWidget({
                   <ZaloLogoBadge className="w-6 h-6" />
                 </div>
 
-                <div className="flex flex-col items-center text-center gap-2.5 my-auto">
-                  <div className="w-[230px] rounded-xl overflow-hidden shadow-md border border-[#d9e7ff] bg-white">
+                <div className="flex flex-col items-center text-center gap-2.5 my-auto w-full">
+                  <div className="w-[244px] rounded-xl overflow-hidden shadow-md border border-[#d9e7ff] bg-white p-3.5 space-y-2.5">
+                    <div className="space-y-0.5">
+                      <p className="text-sm font-bold text-[#1e2a22] leading-snug">
+                        {t.zaloScanTitle}
+                      </p>
+                      <p className="text-[11px] font-medium text-[#5f6d66]">
+                        {language === 'en' ? 'Zalo Business Card' : 'Danh thiếp Zalo'}
+                      </p>
+                    </div>
                     <img
                       src={IMAGE_ASSETS.zaloQrStaff}
                       alt={t.zaloScanTitle}
-                      className="w-full h-auto block object-contain"
+                      className="w-full h-auto block object-contain rounded-md"
                     />
                   </div>
-                  <div className="space-y-1 max-w-[270px]">
-                    <p className="text-xs font-bold text-[#1e2a22]">
-                      {t.zaloScanTitle}
-                    </p>
-                    <p className="text-[11px] text-[#5f6d66] leading-relaxed">
-                      {t.zaloScanHint}
-                    </p>
-                  </div>
+                  <p className="text-[11px] text-[#5f6d66] leading-relaxed max-w-[270px]">
+                    {t.zaloScanHint}
+                  </p>
                 </div>
               </div>
             ) : (
@@ -377,11 +380,19 @@ export function AiAssistantWidget({
             </button>
           </div>
           <div className="p-4 bg-[#f5f9ff] flex flex-col items-center text-center gap-2.5">
-            <div className="w-full max-w-[230px] rounded-xl overflow-hidden shadow-sm border border-[#d9e7ff] bg-white">
+            <div className="w-full max-w-[236px] rounded-xl overflow-hidden shadow-sm border border-[#d9e7ff] bg-white p-3 space-y-2">
+              <div className="space-y-0.5">
+                <p className="text-sm font-bold text-[#1e2a22] leading-snug">
+                  {t.zaloScanTitle}
+                </p>
+                <p className="text-[11px] font-medium text-[#5f6d66]">
+                  {language === 'en' ? 'Zalo Business Card' : 'Danh thiếp Zalo'}
+                </p>
+              </div>
               <img
                 src={IMAGE_ASSETS.zaloQrStaff}
                 alt={t.zaloScanTitle}
-                className="w-full h-auto block object-contain"
+                className="w-full h-auto block object-contain rounded-md"
               />
             </div>
             <p className="text-[11px] text-[#5f6d66] leading-relaxed">

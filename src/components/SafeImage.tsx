@@ -7,6 +7,7 @@ interface SafeImageProps {
   className?: string;
   fallbackLabel?: string;
   emptyStateLabel?: string;
+  loading?: 'eager' | 'lazy';
 }
 
 export function SafeImage({
@@ -15,6 +16,7 @@ export function SafeImage({
   className = 'w-full h-full object-cover',
   fallbackLabel,
   emptyStateLabel,
+  loading = 'lazy',
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
 
@@ -45,7 +47,7 @@ export function SafeImage({
       referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={className}
-      loading="lazy"
+      loading={loading}
     />
   );
 }
